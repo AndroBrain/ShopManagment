@@ -4,6 +4,6 @@
     {
         public int Id { get; set; }
         public string Name { get; set; }
-        // TODO public List<ProductEntity> products { get; set; }
+        public List<ProductEntity> Products { get; set; }
     }
 }
