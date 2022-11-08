@@ -14,6 +14,8 @@
 
   <ItemGroup>
     <Folder Include="data\db\" />
+    <Folder Include="app\" />
+    <Folder Include="domain\model\" />
   </ItemGroup>
 
 </Project>
