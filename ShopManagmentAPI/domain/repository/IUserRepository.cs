@@ -4,10 +4,10 @@ namespace ShopManagmentAPI.domain.repository
 {
     public interface IUserRepository
     {
-        public User AddUser(User user);
-        // TODO Figure out if there is a need for changing it since GettingUser reuires authentication
-        public User GetUserById(int id);
-        public User UpdateUser(User user);
-        public User DeleteUser(int id);
+        public User Create(User user);
+        public User? GetById(int id);
+        public List<User> GetAll();
+        public User Update(User user);
+        public bool Delete(int id);
     }
 }

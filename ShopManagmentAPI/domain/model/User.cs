@@ -4,8 +4,9 @@ namespace ShopManagmentAPI.domain.model
 {
     public class User
     {
+        public int Id { get; set; }
         public string Name { get; set; }
-        public List<ShopEntity> Shops { get; set; }
-        public virtual BillingInfoEntity BillingInfo { get; set; }
+        public UserRole Role { get; set; }
+
     }
 }
