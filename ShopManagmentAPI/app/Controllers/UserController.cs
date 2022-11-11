@@ -64,7 +64,7 @@ public class UserController : ControllerBase
     }
 
     [HttpPost("ChangeName")]
-    public ActionResult ChangeName(string Name)
+    public ActionResult ChangeName([FromQuery] string Name)
     {
         var user = getUserFromToken();
         if (user is null)
@@ -74,6 +74,20 @@ public class UserController : ControllerBase
         user.Name = Name;
         userRepository.Update(user);
         return Ok("OK");
+    }
+
+    [HttpPost("ChangeAnyName")]
+    [Authorize(Roles = "admin")]
+    public ActionResult ChangeAnyName([FromQuery] string userEmail, [FromQuery] string newName)
+    {
+        var user = userRepository.GetByEmail(userEmail);
+        if (user is null)
+        {
+            return NotFound();
+        }
+        user.Name = newName;
+        var updatedUser = userRepository.Update(user);
+        return Ok(updatedUser.Name);
     }
 
     private User? getUserFromToken()
