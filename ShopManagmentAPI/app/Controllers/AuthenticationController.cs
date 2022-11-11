@@ -2,7 +2,8 @@
 using Microsoft.AspNetCore.Mvc;
 using ShopManagmentAPI.data.db;
 using ShopManagmentAPI.data.repository;
-using ShopManagmentAPI.domain.model.user;
+using ShopManagmentAPI.domain.model.authentication;
+using ShopManagmentAPI.domain.service.email;
 using AuthenticationService = ShopManagmentAPI.domain.service.user.AuthenticationService;
 using IAuthenticationService = ShopManagmentAPI.domain.service.user.IAuthenticationService;
 
@@ -12,7 +13,7 @@ namespace ShopManagmentAPI.app.Controllers;
 [Route("[controller]")]
 public class AuthenticationController : ControllerBase
 {
-    private readonly IAuthenticationService userService = new AuthenticationService(new UserRepository(new UserDb()));
+    private readonly IAuthenticationService userService = new AuthenticationService(new UserRepository(new UserDb()), new EmailSender());
     private readonly ILogger<AuthenticationController> logger;
 
     public AuthenticationController(ILogger<AuthenticationController> logger)
@@ -22,7 +23,7 @@ public class AuthenticationController : ControllerBase
 
     [AllowAnonymous]
     [HttpPost("Register")]
-    public ActionResult RegisterUser([FromBody] RegisterUserDTO user)
+    public ActionResult RegisterUser([FromBody] RegisterDto user)
     {
         try
         {

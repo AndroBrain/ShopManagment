@@ -5,6 +5,7 @@ using ShopManagmentAPI.data.repository;
 using ShopManagmentAPI.domain.model.authentication;
 using ShopManagmentAPI.domain.model.user;
 using ShopManagmentAPI.domain.repository;
+using ShopManagmentAPI.domain.service.email;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
@@ -14,10 +15,12 @@ namespace ShopManagmentAPI.domain.service.user;
 public class AuthenticationService : IAuthenticationService
 {
     private readonly IPasswordHasher<User> passwordHasher = new PasswordHasher<User>();
-    private readonly IUserRepository userRepository = new UserRepository(new UserDb());
-    public AuthenticationService(IUserRepository userRepository)
+    private readonly IUserRepository userRepository;
+    private readonly IEmailSender emailSender;
+    public AuthenticationService(IUserRepository userRepository, IEmailSender emailSender)
     {
         this.userRepository = userRepository;
+        this.emailSender = emailSender;
     }
 
     public void RegisterUser(RegisterDto user)
@@ -30,6 +33,7 @@ public class AuthenticationService : IAuthenticationService
         };
         newUser.PasswordHash = passwordHasher.HashPassword(newUser, user.Password);
         userRepository.Create(newUser);
+        emailSender.sendEmail(newUser.Email, "Hello", "Thx for registering for out Shop Managment System");
     }
 
     public User? FindUserByEmail(string email)
