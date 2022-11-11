@@ -1,14 +1,8 @@
-﻿using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.IdentityModel.Tokens;
 using ShopManagmentAPI.data.db;
 using ShopManagmentAPI.data.repository;
-using ShopManagmentAPI.domain;
 using ShopManagmentAPI.domain.model.user;
-using ShopManagmentAPI.domain.repository;
-using ShopManagmentAPI.domain.service.user;
 using AuthenticationService = ShopManagmentAPI.domain.service.user.AuthenticationService;
 using IAuthenticationService = ShopManagmentAPI.domain.service.user.IAuthenticationService;
 
@@ -19,6 +13,12 @@ namespace ShopManagmentAPI.app.Controllers;
 public class AuthenticationController : ControllerBase
 {
     private readonly IAuthenticationService userService = new AuthenticationService(new UserRepository(new UserDb()));
+    private readonly ILogger<AuthenticationController> logger;
+
+    public AuthenticationController(ILogger<AuthenticationController> logger)
+    {
+        this.logger = logger;
+    }
 
     [AllowAnonymous]
     [HttpPost("Register")]
@@ -31,6 +31,7 @@ public class AuthenticationController : ControllerBase
         }
         catch (ArgumentException e)
         {
+            logger.LogError(e.Message);
             return BadRequest(e.Message);
         }
     }

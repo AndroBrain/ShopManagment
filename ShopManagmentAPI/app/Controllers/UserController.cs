@@ -1,17 +1,10 @@
-﻿using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.IdentityModel.Tokens;
 using ShopManagmentAPI.data.db;
 using ShopManagmentAPI.data.repository;
-using ShopManagmentAPI.domain;
 using ShopManagmentAPI.domain.model.user;
 using ShopManagmentAPI.domain.repository;
-using ShopManagmentAPI.domain.service.user;
-using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
-using System.Text;
 
 namespace ShopManagmentAPI.app.Controllers;
 
