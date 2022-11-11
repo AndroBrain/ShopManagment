@@ -1,8 +1,8 @@
-﻿using ShopManagmentAPI.domain.model.user;
+﻿using ShopManagmentAPI.data.entities;
 
-namespace ShopManagmentAPI.data.entities
+namespace ShopManagmentAPI.domain.model.user
 {
-    public class UserEntity
+    public class User
     {
         public int Id { get; set; }
         public string Name { get; set; }

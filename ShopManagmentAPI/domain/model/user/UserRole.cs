@@ -1,4 +1,4 @@
-﻿namespace ShopManagmentAPI.domain.model;
+﻿namespace ShopManagmentAPI.domain.model.user;
 
 public enum UserRole
 {

@@ -1,4 +1,4 @@
-﻿using ShopManagmentAPI.domain.model;
+﻿using ShopManagmentAPI.domain.model.user;
 
 namespace ShopManagmentAPI.domain.repository
 {

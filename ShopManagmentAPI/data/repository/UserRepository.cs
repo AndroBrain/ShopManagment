@@ -1,6 +1,6 @@
 ﻿using ShopManagmentAPI.data.db;
 using ShopManagmentAPI.data.mappers;
-using ShopManagmentAPI.domain.model;
+using ShopManagmentAPI.domain.model.user;
 using ShopManagmentAPI.domain.repository;
 
 namespace ShopManagmentAPI.data.repository

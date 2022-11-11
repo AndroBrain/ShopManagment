@@ -1,5 +1,5 @@
 ﻿using ShopManagmentAPI.data.entities;
-using ShopManagmentAPI.domain.model;
+using ShopManagmentAPI.domain.model.user;
 
 namespace ShopManagmentAPI.data.mappers;
 
@@ -10,6 +10,7 @@ public class UserMapper
         var entity = new UserEntity();
         entity.Id = user.Id;
         entity.Name = user.Name;
+        entity.PasswordHash = user.PasswordHash;
         entity.Role = user.Role;
         return entity;
     }
@@ -19,6 +20,7 @@ public class UserMapper
         var user = new User();
         user.Id = entity.Id;
         user.Name = entity.Name;
+        user.PasswordHash = entity.PasswordHash;
         user.Role = entity.Role;
         return user;
     }
