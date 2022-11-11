@@ -2,6 +2,7 @@
 using Microsoft.IdentityModel.Tokens;
 using ShopManagmentAPI.data.db;
 using ShopManagmentAPI.data.repository;
+using ShopManagmentAPI.domain.model.authentication;
 using ShopManagmentAPI.domain.model.user;
 using ShopManagmentAPI.domain.repository;
 using System.IdentityModel.Tokens.Jwt;
@@ -19,7 +20,7 @@ public class AuthenticationService : IAuthenticationService
         this.userRepository = userRepository;
     }
 
-    public void RegisterUser(RegisterUserDTO user)
+    public void RegisterUser(RegisterDto user)
     {
         var newUser = new User()
         {

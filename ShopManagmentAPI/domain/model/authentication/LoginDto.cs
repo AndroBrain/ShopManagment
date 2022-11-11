@@ -1,4 +1,4 @@
-﻿namespace ShopManagmentAPI.domain.model.user;
+﻿namespace ShopManagmentAPI.domain.model.authentication;
 
 public class LoginDTO
 {

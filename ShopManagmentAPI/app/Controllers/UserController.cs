@@ -30,14 +30,14 @@ public class UserController : ControllerBase
 
     [HttpPost("ChangeAnyName")]
     [Authorize(Roles = "admin")]
-    public ActionResult ChangeAnyName([FromQuery] string userEmail, [FromQuery] string newName)
+    public ActionResult ChangeAnyName([FromBody] ChangeAnyNameDto changeAnyNameDto)
     {
-        var user = userRepository.GetByEmail(userEmail);
+        var user = userRepository.GetByEmail(changeAnyNameDto.Email);
         if (user is null)
         {
             return NotFound();
         }
-        user.Name = newName;
+        user.Name = changeAnyNameDto.Name;
         var updatedUser = userRepository.Update(user);
         return Ok(updatedUser.Name);
     }

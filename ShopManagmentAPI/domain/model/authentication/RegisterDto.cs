@@ -1,6 +1,8 @@
-﻿namespace ShopManagmentAPI.domain.model.user
+﻿using ShopManagmentAPI.domain.model.user;
+
+namespace ShopManagmentAPI.domain.model.authentication
 {
-    public class RegisterUserDTO
+    public class RegisterDto
     {
         public string Email { get; set; }
         public string Name { get; set; }
