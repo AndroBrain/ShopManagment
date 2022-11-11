@@ -8,7 +8,7 @@ namespace ShopManagmentAPI.data.db;
 
 public class UserDb
 {
-    private readonly Dictionary<int, UserEntity> _users = new();
+    private readonly static Dictionary<int, UserEntity> _users = new();
 
     public List<UserEntity> GetAll()
     {
@@ -21,8 +21,8 @@ public class UserDb
     }
     public UserEntity Add(UserEntity user)
     {
-        _users[user.Id] = user;
-        return user;
+        _users.Add(user.Id, user);
+        return _users[user.Id];
     }
 
     public UserEntity Update(UserEntity user)
