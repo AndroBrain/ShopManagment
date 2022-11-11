@@ -20,48 +20,7 @@ namespace ShopManagmentAPI.app.Controllers;
 [Authorize]
 public class UserController : ControllerBase
 {
-    private readonly IUserService userService = new UserService();
     private readonly IUserRepository userRepository = new UserRepository(new UserDb());
-    private readonly IPasswordHasher<User> passwordHasher = new PasswordHasher<User>();
-
-    [AllowAnonymous]
-    [HttpPost("Register")]
-    public ActionResult RegisterUser([FromBody] RegisterUserDTO user)
-    {
-        try
-        {
-            var newUser = new User()
-            {
-                Email = user.Email,
-                Name = user.Name,
-                Role = user.Role,
-            };
-            newUser.PasswordHash = passwordHasher.HashPassword(newUser, user.Password);
-            userRepository.Create(newUser);
-            return Ok("Successfully added new user");
-        } catch(ArgumentException e)
-        {
-            return BadRequest(e.Message);
-        }
-    }
-
-    [AllowAnonymous]
-    [HttpPost("Login")]
-    public ActionResult Login([FromBody] LoginDTO loginDTO)
-    {
-        var user = userRepository.GetByEmail(loginDTO.Email);
-        if (user == null)
-        {
-            return StatusCode(StatusCodes.Status403Forbidden, "Invalid Email");
-        }
-        var passwordVerificationResult = passwordHasher.VerifyHashedPassword(user, user.PasswordHash, loginDTO.Password);
-        if (passwordVerificationResult == PasswordVerificationResult.Failed)
-        {
-            return StatusCode(StatusCodes.Status403Forbidden, "Invalid password");
-        }
-
-        return Ok(userService.generateJWT(user));
-    }
 
     [HttpPost("ChangeName")]
     public ActionResult ChangeName([FromQuery] string Name)
