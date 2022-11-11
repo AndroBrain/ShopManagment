@@ -6,6 +6,7 @@ using ShopManagmentAPI.data.repository;
 using ShopManagmentAPI.domain;
 using ShopManagmentAPI.domain.model.user;
 using ShopManagmentAPI.domain.repository;
+using ShopManagmentAPI.domain.service.user;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
@@ -16,6 +17,7 @@ namespace ShopManagmentAPI.app.Controllers;
 [Route("[controller]")]
 public class UserController : ControllerBase
 {
+    private readonly IUserService userService = new UserService();
     private readonly IUserRepository userRepository = new UserRepository(new UserDb());
     private readonly IPasswordHasher<User> passwordHasher = new PasswordHasher<User>();
 
@@ -52,24 +54,7 @@ public class UserController : ControllerBase
         {
             return Forbid("Invalid password");
         }
-        var claims = new List<Claim>()
-        {
-            new Claim(ClaimTypes.NameIdentifier, user.Email),
-            new Claim(ClaimTypes.Name, user.Name),
-            new Claim(ClaimTypes.Role, user.Role.Name)
-        };
 
-        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(AuthenticationSettings.Key));
-        var cred = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
-        var expires = DateTime.Now.AddDays(AuthenticationSettings.ExpireDays);
-
-        var token = new JwtSecurityToken(AuthenticationSettings.Issuer,
-            AuthenticationSettings.Issuer,
-            claims,
-            expires: expires,
-            signingCredentials: cred);
-
-        var tokenHandler = new JwtSecurityTokenHandler();
-        return Ok(tokenHandler.WriteToken(token));
+        return Ok(userService.generateJWT(user));
     }
 }
