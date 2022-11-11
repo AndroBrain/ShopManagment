@@ -17,9 +17,9 @@ namespace ShopManagmentAPI.data.repository
             return UserMapper.EntityToModel(userDb.Add(UserMapper.ModelToEntity(user)));
         }
 
-        public User? GetById(int id)
+        public User? GetByEmail(string email)
         {
-            var user = userDb.Get(id);
+            var user = userDb.Get(email);
             if (user == null)
             {
                 return null;
@@ -39,9 +39,9 @@ namespace ShopManagmentAPI.data.repository
             return UserMapper.EntityToModel(userDb.Update(UserMapper.ModelToEntity(user)));
         }
 
-        public bool Delete(int id)
+        public bool Delete(string email)
         {
-            return userDb.Remove(id);
+            return userDb.Remove(email);
         }
     }
 }

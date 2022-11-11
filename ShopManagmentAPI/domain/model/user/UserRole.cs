@@ -1,8 +1,6 @@
 ﻿namespace ShopManagmentAPI.domain.model.user;
 
-public enum UserRole
+public class UserRole
 {
-    DEFAULT = 0,
-    ADMINISTRATOR = 1,
-    OWNER = 2,
+    public string Name { get; set; }
 }

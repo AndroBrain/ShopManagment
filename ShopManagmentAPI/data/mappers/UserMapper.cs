@@ -8,7 +8,7 @@ public class UserMapper
     public static UserEntity ModelToEntity(User user)
     {
         var entity = new UserEntity();
-        entity.Id = user.Id;
+        entity.Email = user.Email;
         entity.Name = user.Name;
         entity.PasswordHash = user.PasswordHash;
         entity.Role = user.Role;
@@ -18,7 +18,7 @@ public class UserMapper
     public static User EntityToModel(UserEntity entity)
     {
         var user = new User();
-        user.Id = entity.Id;
+        user.Email = entity.Email;
         user.Name = entity.Name;
         user.PasswordHash = entity.PasswordHash;
         user.Role = entity.Role;

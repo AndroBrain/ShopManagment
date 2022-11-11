@@ -8,31 +8,31 @@ namespace ShopManagmentAPI.data.db;
 
 public class UserDb
 {
-    private readonly static Dictionary<int, UserEntity> _users = new();
+    private readonly static Dictionary<string, UserEntity> _users = new();
 
     public List<UserEntity> GetAll()
     {
         return _users.Values.ToList();
     }
 
-    public UserEntity? Get(int id)
+    public UserEntity? Get(string email)
     {
-        return _users.TryGetValue(id, out UserEntity? value) ? value : null;
+        return _users.TryGetValue(email, out UserEntity? value) ? value : null;
     }
     public UserEntity Add(UserEntity user)
     {
-        _users.Add(user.Id, user);
-        return _users[user.Id];
+        _users.Add(user.Email, user);
+        return _users[user.Email];
     }
 
     public UserEntity Update(UserEntity user)
     {
-        _users[user.Id] = user;
+        _users[user.Email] = user;
         return user;
     }
 
-    public bool Remove(int id)
+    public bool Remove(string email)
     {
-        return _users.Remove(id);
+        return _users.Remove(email);
     }
 }
