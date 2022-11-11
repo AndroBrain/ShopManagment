@@ -32,7 +32,7 @@ public class AuthenticationController : ControllerBase
         catch (ArgumentException e)
         {
             logger.LogError(e.Message);
-            return BadRequest(e.Message);
+            return BadRequest("User with the same email already exists");
         }
     }
 
