@@ -4,9 +4,9 @@ using ShopManagmentAPI.data.entities;
 using ShopManagmentAPI.domain.model;
 using System.Numerics;
 
-namespace ShopManagmentAPI.data.db;
+namespace ShopManagmentAPI.data.db.user;
 
-public class UserDb
+public class UserDb : IUserDao
 {
     private readonly static Dictionary<string, UserEntity> _users = new();
 
@@ -19,7 +19,7 @@ public class UserDb
     {
         return _users.TryGetValue(email, out UserEntity? value) ? value : null;
     }
-    public UserEntity Add(UserEntity user)
+    public UserEntity Create(UserEntity user)
     {
         _users.Add(user.Email, user);
         return _users[user.Email];
@@ -27,12 +27,20 @@ public class UserDb
 
     public UserEntity Update(UserEntity user)
     {
+        if (!_users.ContainsKey(user.Email))
+        {
+            throw new ArgumentException();
+        }
         _users[user.Email] = user;
         return user;
     }
 
-    public bool Remove(string email)
+    public bool Delete(string email)
     {
+        if (!_users.ContainsKey(email))
+        {
+            throw new ArgumentException();
+        }
         return _users.Remove(email);
     }
 }

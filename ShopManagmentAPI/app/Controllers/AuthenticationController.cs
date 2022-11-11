@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ShopManagmentAPI.data.db;
+using ShopManagmentAPI.data.db.user;
 using ShopManagmentAPI.data.repository;
 using ShopManagmentAPI.domain.model.authentication;
 using ShopManagmentAPI.domain.service.email;
