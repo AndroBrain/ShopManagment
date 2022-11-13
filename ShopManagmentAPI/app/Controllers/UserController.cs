@@ -39,8 +39,8 @@ public class UserController : ControllerBase
             return NotFound();
         }
         user.Name = changeAnyNameDto.Name;
-        var updatedUser = userRepository.Update(user);
-        return Ok(updatedUser.Name);
+        userRepository.Update(user);
+        return Ok();
     }
 
     private User? getUserFromToken()

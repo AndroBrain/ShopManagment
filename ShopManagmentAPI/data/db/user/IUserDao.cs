@@ -7,7 +7,7 @@ public interface IUserDao
 {
     public List<UserEntity> GetAll();
     public UserEntity? Get(string email);
-    public UserEntity Create(UserEntity user);
-    public UserEntity Update(UserEntity user);
+    public UserEntity? Create(UserEntity user);
+    public void Update(UserEntity user);
     public bool Delete(string email);
 }

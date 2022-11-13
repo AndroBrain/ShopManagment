@@ -12,9 +12,10 @@ namespace ShopManagmentAPI.data.repository
         public UserRepository(IUserDao userDao) {
             this.userDao = userDao;
         }
-        public User Create(User user)
+        public void Create(User user)
         {
-            return UserMapper.EntityToModel(userDao.Create(UserMapper.ModelToEntity(user)));
+            var userEntity = userDao.Create(UserMapper.ModelToEntity(user));
+            if (userEntity == null) throw new ArgumentException("User already exists");
         }
 
         public User? GetByEmail(string email)
@@ -34,9 +35,9 @@ namespace ShopManagmentAPI.data.repository
             return userDao.GetAll().Select(u => UserMapper.EntityToModel(u)).ToList();
         }
 
-        public User Update(User user)
+        public void Update(User user)
         {
-            return UserMapper.EntityToModel(userDao.Update(UserMapper.ModelToEntity(user)));
+            userDao.Update(UserMapper.ModelToEntity(user));
         }
 
         public bool Delete(string email)

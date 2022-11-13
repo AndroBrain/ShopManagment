@@ -1,46 +1,82 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using ShopManagmentAPI.data.entities;
-using ShopManagmentAPI.domain.model;
-using System.Numerics;
+﻿using ShopManagmentAPI.data.entities;
+using SQLite;
+using SQLiteNetExtensions.Extensions;
 
 namespace ShopManagmentAPI.data.db.user;
 
 public class UserDb : IUserDao
 {
     private readonly static Dictionary<string, UserEntity> _users = new();
+    private readonly string path = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+    private readonly string dbName = "users.db";
+    private readonly string dbPath;
+
+    public UserDb()
+    {
+        dbPath = Path.Combine(path, "ShopManagment", dbName);
+    }
 
     public List<UserEntity> GetAll()
     {
-        return _users.Values.ToList();
+        using (SQLiteConnection conn = new SQLiteConnection(dbPath))
+        {
+            conn.CreateTable<UserEntity>();
+            conn.CreateTable<UserRoleEntity>();
+            return conn.Table<UserEntity>().ToList();
+        }
     }
 
     public UserEntity? Get(string email)
     {
-        return _users.TryGetValue(email, out UserEntity? value) ? value : null;
+        using (SQLiteConnection conn = new SQLiteConnection(dbPath))
+        {
+            conn.CreateTable<UserEntity>();
+            conn.CreateTable<UserRoleEntity>();
+            try
+            {
+                return conn.GetWithChildren<UserEntity>(email);
+            } catch(InvalidOperationException e)
+            {
+                return null;
+            }
+        }
     }
     public UserEntity Create(UserEntity user)
     {
-        _users.Add(user.Email, user);
-        return _users[user.Email];
+        using (SQLiteConnection conn = new SQLiteConnection(dbPath))
+        {
+            conn.CreateTable<UserEntity>();
+            conn.CreateTable<UserRoleEntity>();
+            try
+            {
+                conn.Insert(user);
+                conn.Insert(user.Role);
+                conn.UpdateWithChildren(user);
+                return user;
+            }  catch(SQLiteException e)
+            {
+                return null;
+            }
+        }
     }
 
-    public UserEntity Update(UserEntity user)
+    public void Update(UserEntity user)
     {
-        if (!_users.ContainsKey(user.Email))
+        using (SQLiteConnection conn = new SQLiteConnection(dbPath))
         {
-            throw new ArgumentException();
+            conn.CreateTable<UserEntity>();
+            conn.CreateTable<UserRoleEntity>();
+            conn.UpdateWithChildren(user);
         }
-        _users[user.Email] = user;
-        return user;
     }
 
     public bool Delete(string email)
     {
-        if (!_users.ContainsKey(email))
+        using (SQLiteConnection conn = new SQLiteConnection(dbPath))
         {
-            throw new ArgumentException();
+            conn.CreateTable<UserEntity>();
+            conn.CreateTable<UserRoleEntity>();
+            return conn.Delete(email) > 0;
         }
-        return _users.Remove(email);
     }
 }

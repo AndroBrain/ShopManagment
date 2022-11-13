@@ -11,7 +11,10 @@ public class UserMapper
         entity.Email = user.Email;
         entity.Name = user.Name;
         entity.PasswordHash = user.PasswordHash;
-        entity.Role = user.Role;
+        entity.Role = new UserRoleEntity()
+        {
+            Name = user.Role.Name
+        };
         return entity;
     }
 
@@ -21,7 +24,10 @@ public class UserMapper
         user.Email = entity.Email;
         user.Name = entity.Name;
         user.PasswordHash = entity.PasswordHash;
-        user.Role = entity.Role;
+        user.Role = new UserRole()
+        {
+            Name = entity.Role.Name
+        };
         return user;
     }
 }
