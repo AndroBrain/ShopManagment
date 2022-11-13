@@ -39,6 +39,11 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+if (!File.Exists(DbSettings.dbPath))
+{
+    File.Create(DbSettings.dbPath).Close();
+}
+
 app.UseAuthentication();
 
 app.UseHttpsRedirection();
