@@ -8,7 +8,7 @@ namespace ShopManagmentAPI.domain.service.user;
 
 public interface IAuthenticationService
 {
-    public void RegisterUser(RegisterDto user);
+    public void RegisterUser(RegisterDto user, UserRole role);
     public User? FindUserByEmail(string email);
     public bool VerifyPasswordHashes(User user, string loginPassword);
     public string GenerateJWT(User user);

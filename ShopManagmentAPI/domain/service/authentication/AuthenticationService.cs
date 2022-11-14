@@ -23,13 +23,13 @@ public class AuthenticationService : IAuthenticationService
         this.emailSender = emailSender;
     }
 
-    public void RegisterUser(RegisterDto user)
+    public void RegisterUser(RegisterDto user, UserRole role)
     {
         var newUser = new User()
         {
             Email = user.Email,
             Name = user.Name,
-            Role = user.Role,
+            Role = role,
         };
         newUser.PasswordHash = passwordHasher.HashPassword(newUser, user.Password);
         userRepository.Create(newUser);

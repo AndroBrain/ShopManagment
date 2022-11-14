@@ -37,12 +37,13 @@ public class UserDb : IUserDao
             }
         }
     }
-    public UserEntity Create(UserEntity user)
+    public UserEntity? Create(UserEntity user)
     {
         using (SQLiteConnection conn = new SQLiteConnection(DbSettings.dbPath))
         {
             try
             {
+                Console.WriteLine("Adding user " + user.Name);
                 conn.Insert(user);
                 conn.Insert(user.Role);
                 conn.UpdateWithChildren(user);

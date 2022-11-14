@@ -1,6 +1,14 @@
-using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.IdentityModel.Tokens;
+using ShopManagmentAPI.data.db.user;
+using ShopManagmentAPI.data.repository;
 using ShopManagmentAPI.domain;
+using ShopManagmentAPI.domain.model.authentication;
+using ShopManagmentAPI.domain.model.user;
+using ShopManagmentAPI.domain.service.email;
+using ShopManagmentAPI.domain.service.user;
+using AuthenticationService = ShopManagmentAPI.domain.service.user.AuthenticationService;
+using IAuthenticationService = ShopManagmentAPI.domain.service.user.IAuthenticationService;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -42,6 +50,14 @@ if (app.Environment.IsDevelopment())
 if (!File.Exists(DbSettings.dbPath))
 {
     File.Create(DbSettings.dbPath).Close();
+    var user = new RegisterDto()
+    {
+        Name = "Admin",
+        Email = "admin@shopmanagment.com",
+        Password = "123"
+    };
+    IAuthenticationService authService = new AuthenticationService(new UserRepository(new UserDb()), new EmailSender());
+    authService.RegisterUser(user, new UserRole() { Name = "admin" });
 }
 
 app.UseAuthentication();
