@@ -13,6 +13,7 @@ public class UserDb : IUserDao
         {
             conn.CreateTable<UserEntity>();
             conn.CreateTable<UserRoleEntity>();
+            conn.CreateTable<ShopEntity>();
         }
     }
 
