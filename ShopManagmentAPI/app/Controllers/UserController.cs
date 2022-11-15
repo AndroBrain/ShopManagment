@@ -16,8 +16,23 @@ public class UserController : ControllerBase
 {
     private readonly IUserRepository userRepository = new UserRepository(new UserDb());
 
+    [HttpGet("GetUserInfo")]
+    public ActionResult<UserInfoDto> GetUserInfo() {
+        var user = getUserFromToken();
+        if (user is null)
+        {
+            return Unauthorized();
+        }
+        var result = new UserInfoDto()
+        {
+            Name = user.Name,
+            Email = user.Email
+        };
+        return Ok(result);
+    }
+
     [HttpPut("UpdateUserInfo")]
-    public ActionResult UpdateUserInfo([FromBody] UpdateUserInfoDto updateUserInfoDto)
+    public ActionResult UpdateUserInfo([FromBody] UserInfoDto updateUserInfoDto)
     {
         var user = getUserFromToken();
         if (user is null)
