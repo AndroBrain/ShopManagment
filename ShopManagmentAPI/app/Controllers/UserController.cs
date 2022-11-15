@@ -16,7 +16,7 @@ public class UserController : ControllerBase
 {
     private readonly IUserRepository userRepository = new UserRepository(new UserDb());
 
-    [HttpPost("UpdateUserInfo")]
+    [HttpPut("UpdateUserInfo")]
     public ActionResult UpdateUserInfo([FromBody] UpdateUserInfoDto updateUserInfoDto)
     {
         var user = getUserFromToken();
@@ -34,7 +34,7 @@ public class UserController : ControllerBase
         return BadRequest();
     }
 
-    [HttpPost("UpdateUserInfoByEmail")]
+    [HttpPut("UpdateUserInfoByEmail")]
     [Authorize(Roles = "admin")]
     public ActionResult UpdateUserInfoByEmail([FromBody] UpdateUserInfoByEmailDto updateUserInfoByEmailDto)
     {
