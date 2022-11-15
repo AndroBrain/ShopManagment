@@ -31,7 +31,8 @@ public class UserDb : IUserDao
         {
             try
             {
-                return conn.GetWithChildren<UserEntity>(email);
+                var users = conn.GetAllWithChildren<UserEntity>(filter: u => u.Email == email);
+                return users.FirstOrDefault(defaultValue: null);
             } catch(InvalidOperationException e)
             {
                 return null;
