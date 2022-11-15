@@ -14,7 +14,7 @@ namespace ShopManagmentAPI.data.entities
         public string Name { get; set; }
         public string PasswordHash { get; set; }
         [ForeignKey(typeof(UserRoleEntity))]
-        public int RoleId { get; set; }
+        public int RoleId { get; set; } = 0;
         [OneToOne]
         public UserRoleEntity Role { get; set; }
     }
