@@ -70,12 +70,12 @@ public class UserRepositoryTests
     public void Update_NonExistingUser_ThowsArgumentException()
     {
         var userDaoMock = new Mock<IUserDao>();
-        userDaoMock.Setup(m => m.Update(It.IsAny<UserEntity>()))
+        userDaoMock.Setup(m => m.Update(It.IsAny<string>(),It.IsAny<UserEntity>()))
             .Throws<ArgumentException>();
 
         userRepository = new UserRepository(userDaoMock.Object);
 
-        Action action = () => userRepository.Update(user);
+        Action action = () => userRepository.Update(user.Email, user);
 
         Assert.Throws<ArgumentException>(action);
     }

@@ -2,6 +2,7 @@
 using ShopManagmentAPI.domain;
 using SQLite;
 using SQLiteNetExtensions.Extensions;
+using System.Diagnostics;
 
 namespace ShopManagmentAPI.data.db.user;
 
@@ -57,11 +58,25 @@ public class UserDb : IUserDao
         }
     }
 
-    public void Update(UserEntity user)
+    public bool Update(string actualEmail, UserEntity user)
     {
         using (SQLiteConnection conn = new SQLiteConnection(DbSettings.dbPath))
         {
-            conn.UpdateWithChildren(user);
+            var actualUser = Get(actualEmail);
+            if (actualUser == null) return false;
+            user.Id = actualUser.Id;
+            if (user.RoleId == 0)
+            {
+                user.RoleId = actualUser.RoleId;
+            }
+            try
+            {
+                conn.Update(user);
+                return true;
+            } catch(SQLiteException e)
+            {
+                return false;
+            }
         }
     }
 

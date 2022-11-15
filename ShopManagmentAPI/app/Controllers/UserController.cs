@@ -16,31 +16,40 @@ public class UserController : ControllerBase
 {
     private readonly IUserRepository userRepository = new UserRepository(new UserDb());
 
-    [HttpPost("ChangeName")]
-    public ActionResult ChangeName([FromQuery] string Name)
+    [HttpPost("UpdateUserInfo")]
+    public ActionResult UpdateUserInfo([FromBody] UpdateUserInfoDto updateUserInfoDto)
     {
         var user = getUserFromToken();
         if (user is null)
         {
             return Unauthorized();
         }
-        user.Name = Name;
-        userRepository.Update(user);
-        return Ok("OK");
+        var actualEmail = user.Email;
+        user.Name = updateUserInfoDto.Name;
+        user.Email = updateUserInfoDto.Email;
+        if (userRepository.Update(actualEmail, user))
+        {
+            return Ok("Ok");
+        }
+        return BadRequest();
     }
 
-    [HttpPost("ChangeAnyName")]
+    [HttpPost("UpdateUserInfoByEmail")]
     [Authorize(Roles = "admin")]
-    public ActionResult ChangeAnyName([FromBody] ChangeAnyNameDto changeAnyNameDto)
+    public ActionResult UpdateUserInfoByEmail([FromBody] UpdateUserInfoByEmailDto updateUserInfoByEmailDto)
     {
-        var user = userRepository.GetByEmail(changeAnyNameDto.Email);
+        var user = userRepository.GetByEmail(updateUserInfoByEmailDto.ActualEmail);
         if (user is null)
         {
             return NotFound();
         }
-        user.Name = changeAnyNameDto.Name;
-        userRepository.Update(user);
-        return Ok();
+        user.Name = updateUserInfoByEmailDto.Name;
+        user.Email = updateUserInfoByEmailDto.Email;
+        if (userRepository.Update(updateUserInfoByEmailDto.ActualEmail, user))
+        {
+            return Ok("Ok");
+        }
+        return BadRequest();
     }
 
     private User? getUserFromToken()

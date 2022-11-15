@@ -35,9 +35,9 @@ namespace ShopManagmentAPI.data.repository
             return userDao.GetAll().Select(u => UserMapper.EntityToModel(u)).ToList();
         }
 
-        public void Update(User user)
+        public bool Update(string actualEmail, User user)
         {
-            userDao.Update(UserMapper.ModelToEntity(user));
+            return userDao.Update(actualEmail, UserMapper.ModelToEntity(user));
         }
 
         public bool Delete(string email)
