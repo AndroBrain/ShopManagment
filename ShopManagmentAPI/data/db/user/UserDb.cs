@@ -21,7 +21,7 @@ public class UserDb : IUserDao
     {
         using (SQLiteConnection conn = new SQLiteConnection(DbSettings.dbPath))
         {
-            return conn.Table<UserEntity>().ToList();
+            return conn.GetAllWithChildren<UserEntity>().ToList();
         }
     }
 

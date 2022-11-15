@@ -31,6 +31,13 @@ public class UserController : ControllerBase
         return Ok(result);
     }
 
+
+    [HttpGet("GetAllUsers")]
+    public ActionResult<List<User>> GetAllUsers()
+    {
+        return Ok(userRepository.GetAll());
+    }
+
     [HttpPut("UpdateUserInfo")]
     public ActionResult UpdateUserInfo([FromBody] UserInfoDto updateUserInfoDto)
     {
