@@ -18,7 +18,7 @@ public class UserController : ControllerBase
 
     [HttpGet("GetUserInfo")]
     public ActionResult<UserInfoDto> GetUserInfo() {
-        var user = getUserFromToken();
+        var user = GetUserFromToken();
         if (user is null)
         {
             return Unauthorized();
@@ -31,17 +31,10 @@ public class UserController : ControllerBase
         return Ok(result);
     }
 
-
-    [HttpGet("GetAllUsers")]
-    public ActionResult<List<User>> GetAllUsers()
-    {
-        return Ok(userRepository.GetAll());
-    }
-
     [HttpPut("UpdateUserInfo")]
     public ActionResult UpdateUserInfo([FromBody] UserInfoDto updateUserInfoDto)
     {
-        var user = getUserFromToken();
+        var user = GetUserFromToken();
         if (user is null)
         {
             return Unauthorized();
@@ -54,6 +47,28 @@ public class UserController : ControllerBase
             return Ok("Ok");
         }
         return BadRequest();
+    }
+
+    [HttpDelete("Delete")]
+    public ActionResult Delete()
+    {
+        var user = GetUserFromToken();
+        if (user is null)
+        {
+            return Unauthorized();
+        }
+        if (userRepository.Delete(user.Email))
+        {
+            return Ok();
+        }
+        return BadRequest();
+    }
+
+    [HttpGet("GetAllUsers")]
+    [Authorize(Roles = "admin")]
+    public ActionResult<List<User>> GetAllUsers()
+    {
+        return Ok(userRepository.GetAll());
     }
 
     [HttpPut("UpdateUserInfoByEmail")]
@@ -74,7 +89,7 @@ public class UserController : ControllerBase
         return BadRequest();
     }
 
-    private User? getUserFromToken()
+    private User? GetUserFromToken()
     {
         var email = HttpContext.User.Identities.First()?.Claims?.FirstOrDefault(o => o.Type == ClaimTypes.Email)?.Value;
         if (email == null)
