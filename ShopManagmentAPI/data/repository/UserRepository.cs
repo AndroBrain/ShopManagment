@@ -18,7 +18,7 @@ namespace ShopManagmentAPI.data.repository
             if (userEntity == null) throw new ArgumentException("User already exists");
         }
 
-        public User? GetByEmail(string email)
+        public IdUser? GetByEmail(string email)
         {
             var user = userDao.Get(email);
             if (user == null)
@@ -26,7 +26,10 @@ namespace ShopManagmentAPI.data.repository
                 return null;
             } else
             {
-                return UserMapper.EntityToModel(user);
+            return new IdUser() {
+                    Id = user.Id,
+                    User = UserMapper.EntityToModel(user)
+                };
             }
         }
 

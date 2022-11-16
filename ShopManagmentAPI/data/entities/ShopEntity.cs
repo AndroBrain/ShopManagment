@@ -9,5 +9,7 @@ public class ShopEntity
     public int Id { get; set; }
     public string Name { get; set; }
     [ForeignKey(typeof(UserEntity))]
-    public int UserId { get; set; }
+    public int OwnerId { get; set; }
+    [ManyToOne]
+    public UserEntity User { get; set; }
 }

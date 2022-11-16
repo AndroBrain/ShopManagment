@@ -5,6 +5,8 @@ using ShopManagmentAPI.data.db.user;
 using ShopManagmentAPI.data.repository;
 using ShopManagmentAPI.domain.model.user;
 using ShopManagmentAPI.domain.repository;
+using ShopManagmentAPI.domain.service.email;
+using ShopManagmentAPI.domain.service.user;
 using System.Security.Claims;
 
 namespace ShopManagmentAPI.app.Controllers;
@@ -15,10 +17,16 @@ namespace ShopManagmentAPI.app.Controllers;
 public class UserController : ControllerBase
 {
     private readonly IUserRepository userRepository = new UserRepository(new UserDb());
+    private readonly IAuthenticationService authSerivce;
+
+    public UserController()
+    {
+        authSerivce = new AuthenticationService(userRepository, new EmailSender());
+    }
 
     [HttpGet("GetUserInfo")]
     public ActionResult<UserInfoDto> GetUserInfo() {
-        var user = GetUserFromToken();
+        var user = authSerivce.GetUserFromToken(HttpContext)?.User;
         if (user is null)
         {
             return Unauthorized();
@@ -34,7 +42,7 @@ public class UserController : ControllerBase
     [HttpPut("UpdateUserInfo")]
     public ActionResult UpdateUserInfo([FromBody] UserInfoDto updateUserInfoDto)
     {
-        var user = GetUserFromToken();
+        var user = authSerivce.GetUserFromToken(HttpContext)?.User;
         if (user is null)
         {
             return Unauthorized();
@@ -52,7 +60,7 @@ public class UserController : ControllerBase
     [HttpDelete("Delete")]
     public ActionResult Delete()
     {
-        var user = GetUserFromToken();
+        var user = authSerivce.GetUserFromToken(HttpContext)?.User;
         if (user is null)
         {
             return Unauthorized();
@@ -75,7 +83,7 @@ public class UserController : ControllerBase
     [Authorize(Roles = "admin")]
     public ActionResult UpdateUserInfoByEmail([FromBody] UpdateUserInfoByEmailDto updateUserInfoByEmailDto)
     {
-        var user = userRepository.GetByEmail(updateUserInfoByEmailDto.ActualEmail);
+        var user = userRepository.GetByEmail(updateUserInfoByEmailDto.ActualEmail)?.User;
         if (user is null)
         {
             return NotFound();
@@ -87,13 +95,5 @@ public class UserController : ControllerBase
             return Ok("Ok");
         }
         return BadRequest();
-    }
-
-    private User? GetUserFromToken()
-    {
-        var email = HttpContext.User.Identities.First()?.Claims?.FirstOrDefault(o => o.Type == ClaimTypes.Email)?.Value;
-        if (email == null)
-            return null;
-        return userRepository.GetByEmail(email);
     }
 }

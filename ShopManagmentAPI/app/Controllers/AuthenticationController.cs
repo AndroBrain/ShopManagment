@@ -44,7 +44,7 @@ public class AuthenticationController : ControllerBase
     [HttpPost("Login")]
     public ActionResult Login([FromBody] LoginDTO loginDTO)
     {
-        var user = userService.FindUserByEmail(loginDTO.Email);
+        var user = userService.FindUserByEmail(loginDTO.Email)?.User;
         if (user == null)
         {
             return StatusCode(StatusCodes.Status403Forbidden, "Invalid Email");

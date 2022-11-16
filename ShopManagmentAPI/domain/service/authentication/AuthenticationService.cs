@@ -36,7 +36,7 @@ public class AuthenticationService : IAuthenticationService
         emailSender.sendEmail(newUser.Email, "Hello", "Thx for registering for out Shop Managment System");
     }
 
-    public User? FindUserByEmail(string email)
+    public IdUser? FindUserByEmail(string email)
     {
         return userRepository.GetByEmail(email);
     }
@@ -65,6 +65,14 @@ public class AuthenticationService : IAuthenticationService
 
         var tokenHandler = new JwtSecurityTokenHandler();
         return tokenHandler.WriteToken(token);
+    }
+
+    public IdUser? GetUserFromToken(HttpContext context)
+    {
+        var email = context.User.Identities.First()?.Claims?.FirstOrDefault(o => o.Type == ClaimTypes.Email)?.Value;
+        if (email == null)
+            return null;
+        return userRepository.GetByEmail(email);
     }
 
 }
