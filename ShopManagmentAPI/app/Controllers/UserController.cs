@@ -16,10 +16,25 @@ public class UserController : ControllerBase
 {
     private readonly IUserRepository userRepository = new UserRepository(new UserDb());
 
-    [HttpPost("UpdateUserInfo")]
-    public ActionResult UpdateUserInfo([FromBody] UpdateUserInfoDto updateUserInfoDto)
+    [HttpGet("GetUserInfo")]
+    public ActionResult<UserInfoDto> GetUserInfo() {
+        var user = GetUserFromToken();
+        if (user is null)
+        {
+            return Unauthorized();
+        }
+        var result = new UserInfoDto()
+        {
+            Name = user.Name,
+            Email = user.Email
+        };
+        return Ok(result);
+    }
+
+    [HttpPut("UpdateUserInfo")]
+    public ActionResult UpdateUserInfo([FromBody] UserInfoDto updateUserInfoDto)
     {
-        var user = getUserFromToken();
+        var user = GetUserFromToken();
         if (user is null)
         {
             return Unauthorized();
@@ -34,7 +49,29 @@ public class UserController : ControllerBase
         return BadRequest();
     }
 
-    [HttpPost("UpdateUserInfoByEmail")]
+    [HttpDelete("Delete")]
+    public ActionResult Delete()
+    {
+        var user = GetUserFromToken();
+        if (user is null)
+        {
+            return Unauthorized();
+        }
+        if (userRepository.Delete(user.Email))
+        {
+            return Ok();
+        }
+        return BadRequest();
+    }
+
+    [HttpGet("GetAllUsers")]
+    [Authorize(Roles = "admin")]
+    public ActionResult<List<User>> GetAllUsers()
+    {
+        return Ok(userRepository.GetAll());
+    }
+
+    [HttpPut("UpdateUserInfoByEmail")]
     [Authorize(Roles = "admin")]
     public ActionResult UpdateUserInfoByEmail([FromBody] UpdateUserInfoByEmailDto updateUserInfoByEmailDto)
     {
@@ -52,7 +89,7 @@ public class UserController : ControllerBase
         return BadRequest();
     }
 
-    private User? getUserFromToken()
+    private User? GetUserFromToken()
     {
         var email = HttpContext.User.Identities.First()?.Claims?.FirstOrDefault(o => o.Type == ClaimTypes.Email)?.Value;
         if (email == null)

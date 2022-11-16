@@ -22,7 +22,7 @@ public class UserDb : IUserDao
     {
         using (SQLiteConnection conn = new SQLiteConnection(DbSettings.dbPath))
         {
-            return conn.Table<UserEntity>().ToList();
+            return conn.GetAllWithChildren<UserEntity>().ToList();
         }
     }
 
@@ -84,7 +84,11 @@ public class UserDb : IUserDao
     {
         using (SQLiteConnection conn = new SQLiteConnection(DbSettings.dbPath))
         {
-            return conn.Delete(email) > 0;
+            var userEntity = Get(email);
+            if (userEntity is null) return false;
+            var result = conn.Delete(userEntity) > 0;
+            conn.UpdateWithChildren(userEntity);
+            return result;
         }
     }
 }

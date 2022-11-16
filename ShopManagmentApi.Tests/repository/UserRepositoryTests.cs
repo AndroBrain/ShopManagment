@@ -36,10 +36,13 @@ public class UserRepositoryTests
     {
         var userDaoMock = new Mock<IUserDao>();
         userDaoMock.Setup(m => m.Create(It.IsAny<UserEntity>()))
-            .Returns(UserMapper.ModelToEntity(user));
+                .Returns(UserMapper.ModelToEntity(user));
+        userDaoMock.Setup(m=>m.Get(It.IsAny<string>()))
+                .Returns(UserMapper.ModelToEntity(user));
         userRepository = new UserRepository(userDaoMock.Object);
 
-        var userInDb = userRepository.Create(user);
+        userRepository.Create(user);
+        var userInDb = userRepository.GetByEmail(user.Email);
 
         Assert.Equal(user.Email, userInDb.Email);
         Assert.Equal(user.Name, userInDb.Name);
