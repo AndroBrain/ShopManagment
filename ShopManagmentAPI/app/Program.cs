@@ -38,6 +38,12 @@ builder.Services.AddAuthentication(option =>
 
 builder.Services.AddControllers();
 
+builder.Services.AddCors(options =>
+{ 
+    options.AddPolicy("FrontendApp", builder =>
+    builder.AllowAnyMethod().AllowAnyHeader().AllowAnyOrigin());
+});
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -59,6 +65,8 @@ if (!File.Exists(DbSettings.dbPath))
     IAuthenticationService authService = new AuthenticationService(new UserRepository(new UserDb()), new EmailSender());
     authService.RegisterUser(user, new UserRole() { Name = "admin" });
 }
+
+app.UseCors("FrontendApp");
 
 app.UseAuthentication();
 
