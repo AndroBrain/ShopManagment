@@ -35,20 +35,28 @@ public class ProductController : ControllerBase
         productRepository.Create(new ProductDto()
         {
             Name = product.Name,
+            Shops = product.Shops.ConvertAll(s => new ShopDto()
+            {
+                Id = s.Id,
+                Name = s.Name,
+                OwnerId = owner.Id,
+            }),
         });
         return Ok();
     }
 
+    [HttpGet("GetByShop")]
+    public ActionResult GetByShop([FromQuery] int shopId)
+    {
+        return Ok(productRepository.Get(shopId));
+    }
+
     [HttpPut("Update")]
-    public ActionResult Update([FromBody] UpdateProductDto product)
+    public ActionResult Update([FromBody] ProductDto product)
     {
         var owner = authService.GetUserFromToken(HttpContext);
         if (owner is null) return Unauthorized();
-        var result = productRepository.Update(new ProductDto()
-        {
-            Id = product.Id,
-            Name = product.Name,
-        });
+        var result = productRepository.Update(product);
         if (result)
         {
             return Ok();

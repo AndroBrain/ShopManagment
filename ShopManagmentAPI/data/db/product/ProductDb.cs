@@ -20,6 +20,14 @@ public class ProductDb : IProductDao
         }
     }
 
+    public List<ProductEntity> Get(int shopId)
+    {
+        using (SQLiteConnection conn = new SQLiteConnection(DbSettings.dbPath))
+        {
+            return conn.GetWithChildren<ShopEntity>(shopId).Products;
+        }
+    }
+
     public bool Delete(int id)
     {
         using (SQLiteConnection conn = new SQLiteConnection(DbSettings.dbPath))
