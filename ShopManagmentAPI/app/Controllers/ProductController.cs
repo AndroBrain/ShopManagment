@@ -73,9 +73,9 @@ public class ProductController : ControllerBase
     }
 
     [HttpDelete("Delete")]
-    public ActionResult Delete([FromQuery] int shopId)
+    public ActionResult Delete([FromQuery] int productId)
     {
-        var result = productRepository.Delete(shopId);
+        var result = productRepository.Delete(productId);
         if (result)
         {
             return Ok();
