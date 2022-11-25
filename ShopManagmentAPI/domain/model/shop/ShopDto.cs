@@ -5,5 +5,6 @@
         public int Id { get; set; } = -1;
         public string Name { get; set; }
         public int OwnerId { get; set; }
+        public ShopType Type { get; set; }
     }
 }

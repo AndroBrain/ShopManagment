@@ -17,6 +17,7 @@ public class UserDb : IUserDao
             conn.CreateTable<ShopEntity>();
             conn.CreateTable<ProductEntity>();
             conn.CreateTable<ShopProductEntity>();
+            conn.CreateTable<ShopTypeEntity>();
         }
     }
 

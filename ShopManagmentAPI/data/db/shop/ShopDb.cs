@@ -1,5 +1,6 @@
 ﻿using ShopManagmentAPI.data.entities;
 using ShopManagmentAPI.domain;
+using ShopManagmentAPI.domain.model.shop;
 using SQLite;
 using SQLiteNetExtensions.Extensions;
 
@@ -12,17 +13,18 @@ public class ShopDb : IShopDao
         using (SQLiteConnection conn = new SQLiteConnection(DbSettings.dbPath))
         {
             var owner = conn.GetWithChildren<UserEntity>(shop.OwnerId);
+            ShopTypeEntity? shopType = conn.Table<ShopTypeEntity>().Where(sT => sT.Name == shop.ShopType.Name).FirstOrDefault(shop.ShopType);
+            if (shopType == shop.ShopType)
+            {
+                conn.Insert(shop.ShopType);
+            } else
+            {
+                shop.ShopType = shopType;
+            }
             conn.Insert(shop);
             owner.Shops.Add(shop);
             conn.UpdateWithChildren(owner);
-        }
-    }
-
-    public bool Delete(int id)
-    {
-        using (SQLiteConnection conn = new SQLiteConnection(DbSettings.dbPath))
-        {
-            return conn.Delete<ShopEntity>(id) > 0;
+            conn.UpdateWithChildren(shop);
         }
     }
 
@@ -30,7 +32,7 @@ public class ShopDb : IShopDao
     {
         using (SQLiteConnection conn = new SQLiteConnection(DbSettings.dbPath))
         {
-            return conn.Table<ShopEntity>().Where(s => s.OwnerId == ownerId).ToList();
+            return conn.GetAllWithChildren<ShopEntity>().Where(s => s.OwnerId == ownerId).ToList();
         }
     }
 
@@ -38,7 +40,21 @@ public class ShopDb : IShopDao
     {
         using (SQLiteConnection conn = new SQLiteConnection(DbSettings.dbPath))
         {
+            var actualShop = conn.GetWithChildren<ShopEntity>(shop.Id);
+            if (actualShop is null) return false;
+            conn.Insert(shop.ShopType);
             return conn.Update(shop) > 0;
+        }
+    }
+    public bool Delete(int id)
+    {
+        using (SQLiteConnection conn = new SQLiteConnection(DbSettings.dbPath))
+        {
+            var shop = conn.Get<ShopEntity>(id);
+            if (shop is null) return false;
+            var result = conn.Delete(shop) > 0;
+            conn.UpdateWithChildren(shop);
+            return result;
         }
     }
 }

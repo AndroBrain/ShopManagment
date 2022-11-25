@@ -34,6 +34,7 @@ public class ShopController : ControllerBase
         {
             Name = shop.Name,
             OwnerId = owner.Id,
+            Type = shop.Type,
         });
         return Ok();
     }
@@ -56,6 +57,7 @@ public class ShopController : ControllerBase
             Id = shop.Id,
             Name = shop.Name,
             OwnerId = owner.Id,
+            Type = shop.Type,
         });
         if (result)
         {

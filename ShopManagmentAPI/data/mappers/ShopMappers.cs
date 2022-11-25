@@ -12,6 +12,10 @@ public class ShopMappers
             Id = entity.Id,
             Name = entity.Name,
             OwnerId = entity.OwnerId,
+            Type = new ShopType
+            {
+                Name = entity.ShopType.Name,
+            }
         };
     }
 
@@ -22,6 +26,10 @@ public class ShopMappers
             Id = shop.Id,
             Name = shop.Name,
             OwnerId = shop.OwnerId,
+            ShopType = new ShopTypeEntity
+            {
+                Name = shop.Type.Name,
+            }
         };
     }
 }
