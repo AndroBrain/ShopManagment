@@ -20,9 +20,9 @@ namespace ShopManagmentAPI.data.repository
             productDao.Create(ProductMappers.DtoToEntity(product));
         }
 
-        public List<ProductDto> Get(int shopId)
+        public List<ProductDto> GetAll(int ownerId)
         {
-            return productDao.Get(shopId).ConvertAll(p => ProductMappers.EntityToDto(p));
+            return productDao.GetAll(ownerId).ConvertAll(s => ProductMappers.EntityToDto(s));
         }
 
         public bool Delete(int id)

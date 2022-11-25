@@ -19,5 +19,7 @@ namespace ShopManagmentAPI.data.entities
         public UserRoleEntity Role { get; set; }
         [OneToMany]
         public List<ShopEntity> Shops { get; set; } = new List<ShopEntity>();
+        [OneToMany]
+        public List<ProductEntity> Products { get; set; } = new List<ProductEntity>();
     }
 }

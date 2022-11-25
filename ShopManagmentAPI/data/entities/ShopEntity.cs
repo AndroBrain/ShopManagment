@@ -12,6 +12,4 @@ public class ShopEntity
     public int OwnerId { get; set; }
     [ManyToOne]
     public UserEntity User { get; set; }
-    [ManyToMany(typeof(ShopProductEntity))]
-    public List<ProductEntity> Products { get; set; } = new List<ProductEntity>();
 }

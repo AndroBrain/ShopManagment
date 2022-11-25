@@ -11,20 +11,18 @@ public class ProductDb : IProductDao
     {
         using (SQLiteConnection conn = new SQLiteConnection(DbSettings.dbPath))
         {
+            var owner = conn.GetWithChildren<UserEntity>(product.OwnerId);
             conn.Insert(product);
-            product.Shops.ForEach(shop =>
-            {
-                conn.Insert(shop);
-            });
-            conn.UpdateWithChildren(product);
+            owner.Products.Add(product);
+            conn.UpdateWithChildren(owner);
         }
     }
 
-    public List<ProductEntity> Get(int shopId)
+    public List<ProductEntity> GetAll(int ownerId)
     {
         using (SQLiteConnection conn = new SQLiteConnection(DbSettings.dbPath))
         {
-            return conn.GetWithChildren<ShopEntity>(shopId).Products;
+            return conn.Table<ProductEntity>().Where(s => s.OwnerId == ownerId).ToList();
         }
     }
 

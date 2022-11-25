@@ -12,7 +12,7 @@ public class ProductMappers
         {
             Id = entity.Id,
             Name = entity.Name,
-            Shops = entity.Shops.ConvertAll(s => ShopMappers.EntityToDto(s)),
+            OwnerId = entity.OwnerId,
         };
     }
 
@@ -22,7 +22,7 @@ public class ProductMappers
         {
             Id = product.Id,
             Name = product.Name,
-            Shops = product.Shops.ConvertAll(s => ShopMappers.DtoToEntity(s)),
+            OwnerId = product.OwnerId,
         };
     }
 }

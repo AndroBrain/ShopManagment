@@ -3,17 +3,14 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShopManagmentAPI", "ShopManagmentAPI\ShopManagmentAPI.csproj", "{6A9B3344-2CFE-4AED-950A-925CD4BB3145}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ShopManagmentAPI", "ShopManagmentAPI\ShopManagmentAPI.csproj", "{6A9B3344-2CFE-4AED-950A-925CD4BB3145}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShopManagmentApi.Tests", "ShopManagmentApi.Tests\ShopManagmentApi.Tests.csproj", "{D6C67609-A155-496F-8694-A01CBC1AD918}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ShopManagmentApi.Tests", "ShopManagmentApi.Tests\ShopManagmentApi.Tests.csproj", "{D6C67609-A155-496F-8694-A01CBC1AD918}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
-	EndGlobalSection
-	GlobalSection(SolutionProperties) = preSolution
-		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{6A9B3344-2CFE-4AED-950A-925CD4BB3145}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -24,5 +21,11 @@ Global
 		{D6C67609-A155-496F-8694-A01CBC1AD918}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D6C67609-A155-496F-8694-A01CBC1AD918}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D6C67609-A155-496F-8694-A01CBC1AD918}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {6D4BF47C-0A06-4908-AD22-4FC2EF0A2150}
 	EndGlobalSection
 EndGlobal
