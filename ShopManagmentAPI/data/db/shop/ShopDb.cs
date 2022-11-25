@@ -17,7 +17,8 @@ public class ShopDb : IShopDao
             if (shopType == shop.ShopType)
             {
                 conn.Insert(shop.ShopType);
-            } else
+            }
+            else
             {
                 shop.ShopType = shopType;
             }
@@ -43,7 +44,9 @@ public class ShopDb : IShopDao
             var actualShop = conn.GetWithChildren<ShopEntity>(shop.Id);
             if (actualShop is null) return false;
             conn.Insert(shop.ShopType);
-            return conn.Update(shop) > 0;
+            var result = conn.Update(shop) > 0;
+            conn.UpdateWithChildren(shop);
+            return result;
         }
     }
     public bool Delete(int id)
@@ -55,6 +58,21 @@ public class ShopDb : IShopDao
             var result = conn.Delete(shop) > 0;
             conn.UpdateWithChildren(shop);
             return result;
+        }
+    }
+
+    public ShopEntity? Get(int id)
+    {
+        using (SQLiteConnection conn = new SQLiteConnection(DbSettings.dbPath))
+        {
+            try
+            {
+                return conn.GetWithChildren<ShopEntity?>(id);
+            }
+            catch (InvalidOperationException e)
+            {
+                return null;
+            }
         }
     }
 }

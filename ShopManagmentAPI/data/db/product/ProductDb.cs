@@ -38,7 +38,24 @@ public class ProductDb : IProductDao
     {
         using (SQLiteConnection conn = new SQLiteConnection(DbSettings.dbPath))
         {
-            return conn.Update(product) > 0;
+            var result = conn.Update(product) > 0;
+            conn.UpdateWithChildren(product);
+            return result;
+        }
+    }
+
+    public ProductEntity? Get(int id)
+    {
+        using (SQLiteConnection conn = new SQLiteConnection(DbSettings.dbPath))
+        {
+            try
+            {
+                return conn.GetWithChildren<ProductEntity?>(id, true);
+            }
+            catch (InvalidOperationException e)
+            {
+                return null;
+            }
         }
     }
 }

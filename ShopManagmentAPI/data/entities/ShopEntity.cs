@@ -16,4 +16,6 @@ public class ShopEntity
     public ShopTypeEntity ShopType { get; set; }
     [ManyToOne]
     public UserEntity User { get; set; }
+    [ManyToMany(typeof(ShopProductEntity))]
+    public List<ProductEntity> Products { get; set; }
 }

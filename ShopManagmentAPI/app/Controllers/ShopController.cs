@@ -1,6 +1,7 @@
 ﻿
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using ShopManagmentAPI.data.db.product;
 using ShopManagmentAPI.data.db.shop;
 using ShopManagmentAPI.data.db.user;
 using ShopManagmentAPI.data.repository;
@@ -18,11 +19,23 @@ public class ShopController : ControllerBase
 {
     private readonly IUserRepository userRepository = new UserRepository(new UserDb());
     private readonly IAuthenticationService authService;
-    private readonly IShopRepository shopRepository = new ShopRepository(new ShopDb());
+    private readonly IShopRepository shopRepository = new ShopRepository(new ShopDb(), new ProductDb());
 
     public ShopController()
     {
         authService = new AuthenticationService(userRepository, new EmailSender());
+    }
+
+    [HttpPost("AddProduct")]
+    public ActionResult AddProduct([FromBody] AddProductToShopDto addProductToShopDto)
+    {
+        return Ok(shopRepository.AddProduct(addProductToShopDto));
+    }
+
+    [HttpGet("GetByProduct")]
+    public ActionResult<List<ShopDto>> GetByProduct([FromQuery] int productId)
+    {
+        return Ok(shopRepository.GetByProduct(productId));
     }
 
     [HttpPost("Create")]
