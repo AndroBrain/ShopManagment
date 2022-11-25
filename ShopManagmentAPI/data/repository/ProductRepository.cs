@@ -1,5 +1,6 @@
 ﻿using ShopManagmentAPI.data.db.product;
 using ShopManagmentAPI.data.db.shop;
+using ShopManagmentAPI.data.entities;
 using ShopManagmentAPI.data.mappers;
 using ShopManagmentAPI.domain.model.product;
 using ShopManagmentAPI.domain.model.shop;
@@ -10,9 +11,11 @@ namespace ShopManagmentAPI.data.repository
     public class ProductRepository : IProductRepository
     {
         private readonly IProductDao productDao;
-        public ProductRepository(IProductDao productDao)
+        private readonly IShopDao shopDao;
+        public ProductRepository(IProductDao productDao, IShopDao shopDao)
         {
             this.productDao = productDao;
+            this.shopDao = shopDao; 
         }
 
         public void Create(ProductDto product)
@@ -24,6 +27,18 @@ namespace ShopManagmentAPI.data.repository
         {
             return productDao.GetAll(ownerId).ConvertAll(s => ProductMappers.EntityToDto(s));
         }
+        public List<ProductDto> GetByShop(int shopId)
+        {
+            var shop = shopDao.Get(shopId);
+            if (shop is null)
+            {
+                return new List<ProductDto>();
+            }
+            var allProducts = productDao.GetAll(shop.OwnerId);
+            IEnumerable<ProductEntity> shopProducts = allProducts.Where(product => shop.Products.Any(shopProduct => shopProduct.Id == product.Id));
+
+            return shopProducts.Select(product => ProductMappers.EntityToDto(product)).ToList();
+        }
 
         public bool Delete(int id)
         {
@@ -34,5 +49,6 @@ namespace ShopManagmentAPI.data.repository
         {
             return productDao.Update(ProductMappers.DtoToEntity(product));
         }
+
     }
 }

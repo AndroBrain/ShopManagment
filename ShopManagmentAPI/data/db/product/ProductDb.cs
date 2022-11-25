@@ -22,7 +22,7 @@ public class ProductDb : IProductDao
     {
         using (SQLiteConnection conn = new SQLiteConnection(DbSettings.dbPath))
         {
-            return conn.Table<ProductEntity>().Where(s => s.OwnerId == ownerId).ToList();
+            return conn.GetAllWithChildren<ProductEntity>().Where(s => s.OwnerId == ownerId).ToList();
         }
     }
 

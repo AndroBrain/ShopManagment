@@ -1,5 +1,6 @@
 ﻿using ShopManagmentAPI.data.db.product;
 using ShopManagmentAPI.data.db.shop;
+using ShopManagmentAPI.data.entities;
 using ShopManagmentAPI.data.mappers;
 using ShopManagmentAPI.domain.model.shop;
 using ShopManagmentAPI.domain.repository;
@@ -51,7 +52,7 @@ namespace ShopManagmentAPI.data.repository
                 return new List<ShopDto>();
             }
             var allShops = shopDao.GetAll(product.OwnerId);
-            var productShops = allShops.Where(shop => product.Shops.Any(productShop => productShop.Id == shop.Id));
+            IEnumerable<ShopEntity> productShops = allShops.Where(shop => product.Shops.Any(productShop => productShop.Id == shop.Id));
 
             return productShops.Select(shop => ShopMappers.EntityToDto(shop)).ToList();
         }

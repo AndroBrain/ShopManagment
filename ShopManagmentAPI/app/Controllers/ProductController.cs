@@ -20,7 +20,7 @@ public class ProductController : ControllerBase
 {
     private readonly IUserRepository userRepository = new UserRepository(new UserDb());
     private readonly IAuthenticationService authService;
-    private readonly IProductRepository productRepository = new ProductRepository(new ProductDb());
+    private readonly IProductRepository productRepository = new ProductRepository(new ProductDb(), new ShopDb());
 
     public ProductController()
     {
@@ -46,6 +46,12 @@ public class ProductController : ControllerBase
         var user = authService.GetUserFromToken(HttpContext);
         if (user is null) return Unauthorized();
         return productRepository.GetAll(user.Id);
+    }
+
+    [HttpGet("GetByShop")]
+    public ActionResult<List<ProductDto>> GetByShop([FromQuery] int shopId)
+    {
+        return Ok(productRepository.GetByShop(shopId));
     }
 
     [HttpPut("Update")]
