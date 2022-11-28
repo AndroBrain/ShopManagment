@@ -53,8 +53,11 @@ function Products() {
             <ul className="productList">
                 {products.map(product => (
                     <li key={product.id} className="shopItem">
-                        <div className="flexBox">
-                            <p className="name">{product.name}</p>
+                        <div>
+                            <p className="name">Name: {product.name}</p>
+                        </div>
+                        <div>
+                            <p className="name">Price: {product.price}</p>
                         </div>
                     </li>
                 ))}

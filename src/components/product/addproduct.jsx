@@ -4,6 +4,7 @@ import {useNavigate, useParams} from "react-router-dom";
 
 function AddProduct() {
     const [productName, setProductName] = useState("")
+    const [price, setPrice] = useState(0.0)
     const [isLoading, setIsLoading] = useState(false)
     const [isFailure, setIsFailure] = useState(false)
 
@@ -60,15 +61,18 @@ function AddProduct() {
                 }
             }
         };
-        const data = JSON.stringify({name: shop, shopIds: [params.id]});
+        const data = JSON.stringify({name: shop, price: price, shopIds: [params.id]});
         xhr.send(data);
     }
 
     return (
         <div className="shop-controls-group">
-            <label htmlFor="username">Product Name</label>
+            <label htmlFor="username">Name</label>
             <input type="text" name="text" placeholder="Product Name"
                    onChange={e => setProductName(e.target.value)}/>
+            <label htmlFor="username">Price</label>
+            <input type="number" name="text" placeholder="Price"
+                   onChange={e => setPrice(parseFloat(e.target.value))}/>
             {isLoading && <span>Loading...</span>}
             {isFailure && <span style={{color: "red"}}>Error</span>}
             <button type="button" className="optionsButton" onClick={() => createProduct(productName)}>Add</button>

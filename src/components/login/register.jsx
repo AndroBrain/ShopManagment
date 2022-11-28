@@ -75,7 +75,7 @@ export class Register extends React.Component {
                         </div>
                         <div className="form-group">
                             <label htmlFor="email">Email</label>
-                            <input type="text" name="email" placeholder="example@email.com"
+                            <input type="email" name="email" placeholder="example@email.com"
                                    onChange={this.handleEmailChange}/>
                         </div>
                         <div className="form-group">

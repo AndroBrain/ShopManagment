@@ -70,7 +70,7 @@ export class Login extends React.Component {
                     <div className="form">
                         <div className="form-group">
                             <label htmlFor="username">Email</label>
-                            <input type="text" name="email" placeholder="example@email.com"
+                            <input type="email" name="email" placeholder="example@email.com"
                                    onChange={this.handleEmailChange}/>
                         </div>
                         <div className="form-group">
