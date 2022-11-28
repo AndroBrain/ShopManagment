@@ -41,12 +41,19 @@ public class ShopDb : IShopDao
     {
         using (SQLiteConnection conn = new SQLiteConnection(DbSettings.dbPath))
         {
-            var actualShop = conn.GetWithChildren<ShopEntity>(shop.Id);
-            if (actualShop is null) return false;
-            conn.Insert(shop.ShopType);
-            var result = conn.Update(shop) > 0;
-            conn.UpdateWithChildren(shop);
-            return result;
+            try
+            {
+                var actualShop = conn.GetWithChildren<ShopEntity>(shop.Id);
+                if (actualShop is null) return false;
+                conn.Insert(shop.ShopType);
+                shop.User = actualShop.User;
+                var result = conn.Update(shop) > 0;
+                conn.UpdateWithChildren(shop);
+                return result;
+            } catch(InvalidOperationException e)
+            {
+                return false;
+            }
         }
     }
     public bool Delete(int id)

@@ -8,6 +8,7 @@ public class ProductEntity
     [PrimaryKey, AutoIncrement]
     public int Id { get; set; }
     public string Name { get; set; }
+    public double Price { get; set; }
     [ForeignKey(typeof(UserEntity))]
     public int OwnerId { get; set; }
     [ManyToOne]

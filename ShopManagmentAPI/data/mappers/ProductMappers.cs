@@ -13,6 +13,7 @@ public class ProductMappers
             Id = entity.Id,
             Name = entity.Name,
             OwnerId = entity.OwnerId,
+            Price = entity.Price,
         };
     }
 
@@ -23,6 +24,7 @@ public class ProductMappers
             Id = product.Id,
             Name = product.Name,
             OwnerId = product.OwnerId,
+            Price = product.Price,
         };
     }
 }

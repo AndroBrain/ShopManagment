@@ -7,7 +7,7 @@ namespace ShopManagmentAPI.data.db.product;
 
 public class ProductDb : IProductDao
 {
-    public void Create(ProductEntity product)
+    public int Create(ProductEntity product)
     {
         using (SQLiteConnection conn = new SQLiteConnection(DbSettings.dbPath))
         {
@@ -15,6 +15,7 @@ public class ProductDb : IProductDao
             conn.Insert(product);
             owner.Products.Add(product);
             conn.UpdateWithChildren(owner);
+            return product.Id;
         }
     }
 

@@ -65,13 +65,14 @@ public class ShopController : ControllerBase
     {
         var owner = authService.GetUserFromToken(HttpContext);
         if (owner is null) return Unauthorized();
-        var result = shopRepository.Update(new ShopDto()
+        var shopDto = new ShopDto()
         {
             Id = shop.Id,
             Name = shop.Name,
             OwnerId = owner.Id,
             Type = shop.Type,
-        });
+        };
+        var result = shopRepository.Update(shopDto);
         if (result)
         {
             return Ok();

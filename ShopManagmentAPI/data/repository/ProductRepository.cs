@@ -18,9 +18,9 @@ namespace ShopManagmentAPI.data.repository
             this.shopDao = shopDao; 
         }
 
-        public void Create(ProductDto product)
+        public int Create(ProductDto product)
         {
-            productDao.Create(ProductMappers.DtoToEntity(product));
+            return productDao.Create(ProductMappers.DtoToEntity(product));
         }
 
         public List<ProductDto> GetAll(int ownerId)

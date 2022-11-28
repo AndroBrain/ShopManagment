@@ -32,12 +32,13 @@ public class ProductController : ControllerBase
     {
         var owner = authService.GetUserFromToken(HttpContext);
         if (owner is null) return Unauthorized();
-        productRepository.Create(new ProductDto()
+        var productId = productRepository.Create(new ProductDto()
         {
             Name = product.Name,
+            Price = product.Price,
             OwnerId = owner.Id,
         });
-        return Ok();
+        return Ok(productId);
     }
 
     [HttpGet("GetAll")]
@@ -63,6 +64,7 @@ public class ProductController : ControllerBase
         {
             Id = product.Id,
             Name = product.Name,
+            Price = product.Price,
             OwnerId = owner.Id,
         });
         if (result)
